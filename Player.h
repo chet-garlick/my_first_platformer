@@ -143,7 +143,6 @@ public:
     }
 
     void resetSprite(){
-        
         numMoveCallsCurrSprite = 0;
         spriteRunCycleLoc = 0;
         if(getForwardFacing()){
@@ -158,7 +157,7 @@ public:
         sprite.setTextureRect(currSpriteRect);
         setRunning(false);
         forwardCycleDirection = true;
-
+        setJumping(false);
         //TODO::what else do we need to reset?
     }
 
@@ -194,14 +193,66 @@ public:
         return forwardCycleDirection;
     }
 
-    void update(){
+    void updateVertical(){
+        sprite.move(0,verticalSpeed);
         verticalSpeed += getGravityConst();
-        
+        if(verticalSpeed < 0){
+            setSpriteJumping();
+            setFalling(false);
+            setJumping(true);
+        } else if(verticalSpeed > 0) {
+            setSpriteFalling();
+            setFalling(true);
+            setJumping(false);
+        } else if(verticalSpeed == 0){
+            resetSprite();
+            setFalling(false);
+            setJumping(false);
+        }
+
         //TODO: see updateHorizontalSpeed.
         //
         //sprite.move( ??? , getVerticalSpeed() );
     }
+
+    void update(){
+        updateVertical();
+    }
+
+    bool getJumping(){
+        return isJumping;
+    }
+
+    void setJumping(bool newJumping){
+        isJumping = newJumping;
+    }
+
+    void jump(){
+        verticalSpeed += jumpPower;
+        setJumping(true);
+    }
+
+    bool getFalling(){
+        return isFalling;
+    }
+
+    void setFalling(bool newFalling){
+        isFalling = newFalling;
+        setJumping(false);
+    }
     
+    void setSpriteJumping(){
+        currSpriteRect.left = spriteSize * 2;
+        currSpriteRect.top = 0;
+        sprite.setTextureRect(currSpriteRect);
+    }
+
+    void setSpriteFalling(){
+        currSpriteRect.left = spriteSize * 2;
+        currSpriteRect.top = spriteSize;
+        sprite.setTextureRect(currSpriteRect);
+    }
+
     /*
     bool isCollidingWithCoin(Coin *coin) {
         if (player.getGlobalBounds().intersects(coin->getGlobalBounds())) {
@@ -214,9 +265,11 @@ private:
     sf::Texture texture;
     sf::Sprite sprite;
     sf::IntRect currSpriteRect;    
-    
+    bool isJumping;
+    bool isFalling;
     float horizontalSpeed = 4;
     float verticalSpeed = 0;
+    const float jumpPower = -0.5;
     const float horizontalConst = 2;
     const float gravityConst = 0.3;
     int spriteSize;

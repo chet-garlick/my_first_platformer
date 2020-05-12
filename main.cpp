@@ -20,7 +20,7 @@ int main()
 
     sf::Vector2i centerWindow((sf::VideoMode::getDesktopMode().width / 2 - 445) , (sf::VideoMode::getDesktopMode().height / 2) - 480);
   
-    window.create(sf::VideoMode(1000,500), "My Platformer", sf::Style::Titlebar | sf::Style::Close);
+    window.create(sf::VideoMode(1000,600), "My Platformer", sf::Style::Titlebar | sf::Style::Close);
   
     window.setPosition(centerWindow);
   
@@ -36,13 +36,25 @@ int main()
     // Start the game loop
     while (window.isOpen())
     {
-
+        
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up)){
+            //if(boundsCheckPasses(player, window ceiling){
+            //  player.jump();
+            //}
+            player.jump();
+        }
 
         if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right)){
+            //if(boundsCheckPasses(player, walls?){
+            //  player.jump();
+            //}
             player.moveRight();
         }
 
         else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left)){
+            //if(boundsCheckPasses(player, walls?){
+            //  player.jump();
+            //}
             player.moveLeft();
         }
 
@@ -50,6 +62,11 @@ int main()
             player.resetSprite();
         }
 
+        //if(!boundsCheckPasses(player, floors?){
+        //    player.stopFalling();
+        //} else {
+        //    player.resetSprite();
+        //}
 
         // Process events
         sf::Event event;
@@ -66,12 +83,16 @@ int main()
 
 
         }
+
+        //update necessary game objects
+        player.update();
+        
+        
+
         // Clear screen
         window.clear();
 
         window.draw(background);
-        // Draw the sprite
-        //window.draw(sprite);
         
         // Draw the player
         player.draw(window);
