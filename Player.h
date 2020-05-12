@@ -13,11 +13,13 @@ public:
     }
     */
 
-    Player(std::string fileName){
-        
-        if (!texture.loadFromFile("resources/2x/attack_0.png")) return EXIT_FAILURE;
+    Player(std::string fileName, int size){
+        spriteSize = size;
+        if (!texture.loadFromFile("resources/ninja-black-32x32.png")){ std::cerr << "Incorrect texture load from file." << std::endl; }
         sprite.setTexture(texture);
-
+        sprite.setTextureRect(sf::IntRect(0,0,32,32));
+        sprite.setScale(2,2);
+        
     }
   
     void draw(sf::RenderWindow &window) {
@@ -25,7 +27,7 @@ public:
     }
   
     void move(sf::Vector2f distance) {
-        player.move(distance);
+        sprite.move(distance);
     }
   
     void setPos(sf::Vector2f newPos) {
@@ -37,7 +39,7 @@ public:
     }
 
     float getX(){
-        return sprite.getPosition().x
+        return sprite.getPosition().x;
     }
   
     float getY() {
@@ -45,16 +47,15 @@ public:
     }
 
     void moveRight(){
-        //TODO
+        sprite.move(getHorizontalSpeed(), 0);
     }
 
     void moveLeft(){
-        //TODO
+        sprite.move(-1*getHorizontalSpeed(),0);
     }
   
-    float getSpeed(){
-        //TODO implement
-        return 0.01;
+    float getHorizontalSpeed(){
+        return horizontalSpeed;
     }
     
     
@@ -69,9 +70,9 @@ public:
 private:
     sf::Texture texture;
     sf::Sprite sprite;
-    float horizontalSpeed = 0.2;
+    float horizontalSpeed = 4;
     const float gravityConst = 0.3;
-
+    int spriteSize;
 
         
 };

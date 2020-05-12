@@ -13,10 +13,10 @@ int main()
 {
     // Create the main window
     sf::RenderWindow window(sf::VideoMode(800, 600), "SFML window");
-    std::string textureFile = "resources/2x/attack_0.png";
+    std::string textureFile = "resources/ninja-black-32x32.png";
 
     // Create player object
-    Player player(textureFile);
+    Player player(textureFile, 32);
 
     sf::Vector2i centerWindow((sf::VideoMode::getDesktopMode().width / 2 - 445) , (sf::VideoMode::getDesktopMode().height / 2) - 480);
   
@@ -25,7 +25,8 @@ int main()
     window.setPosition(centerWindow);
   
     window.setKeyRepeatEnabled(true);
-
+    
+    window.setFramerateLimit(60);
 
     //draw background (let's start with white, to see our sprite better)
     //
@@ -35,13 +36,31 @@ int main()
     // Start the game loop
     while (window.isOpen())
     {
+
+
+        if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right)){
+            player.moveRight();
+        }
+
+        else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left)){
+            player.moveLeft();
+        }
+
+
         // Process events
         sf::Event event;
         while (window.pollEvent(event))
         {
+            
+            
+            
             // Close window: exit
             if (event.type == sf::Event::Closed)
                 window.close();
+
+            
+
+
         }
         // Clear screen
         window.clear();
@@ -52,7 +71,6 @@ int main()
         
         // Draw the player
         player.draw(window);
-        
         // Update the window
         window.display();
     }
