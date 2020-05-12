@@ -60,24 +60,29 @@ public:
             setRunning(true);
         }
 
-        if(numMoveCallsCurrSprite % 20 == 0){
+        if(numMoveCallsCurrSprite % 12 == 0){
             //TODO: get cycle totally working instead of sticking on last 2 parts of it. (maybe a bool direction of cycle member variable?)
-            if(getSpriteRunCycleLoc() == 3){
-                spriteRunCycleLoc -= 1;
+            
+
+            if(getCycleDirection()){
+                spriteRunCycleLoc++;
             } else {
-                spriteRunCycleLoc += 1;
+                spriteRunCycleLoc--;
             }
-            //TODO::
-            int huh = numMoveCallsCurrSprite % 20;
-            currSpriteRect.top = spriteRunCycleLoc * spriteSize;
+                
+            if(getSpriteRunCycleLoc() == 3 || getSpriteRunCycleLoc() == 0){
+                reverseCycleDirection();
+            }
+
+            currSpriteRect.top = getSpriteRunCycleLoc() * spriteSize;
             sprite.setTextureRect(currSpriteRect);
+
         }
 
         sprite.move(getHorizontalSpeed(), 0);
     }
 
     void moveLeft(){
-        //TODO:: finish cycle animation in moveRight function then appropriately copy it here.
         numMoveCallsCurrSprite++;
         spriteState = 1;
         
@@ -85,6 +90,7 @@ public:
             resetSprite();
             flipX();
         }
+
 
 
         if(!getRunning()){
@@ -96,7 +102,24 @@ public:
 
         }
         
-        
+        if(numMoveCallsCurrSprite % 12 == 0){
+            //TODO: get cycle totally working instead of sticking on last 2 parts of it. (maybe a bool direction of cycle member variable?)
+            
+
+            if(getCycleDirection()){
+                spriteRunCycleLoc++;
+            } else {
+                spriteRunCycleLoc--;
+            }
+                
+            if(getSpriteRunCycleLoc() == 3 || getSpriteRunCycleLoc() == 0){
+                reverseCycleDirection();
+            }
+
+            currSpriteRect.top = getSpriteRunCycleLoc() * spriteSize;
+            sprite.setTextureRect(currSpriteRect);
+
+        }
         
 
         sprite.move(-1*getHorizontalSpeed(),0);
@@ -134,6 +157,8 @@ public:
         }
         sprite.setTextureRect(currSpriteRect);
         setRunning(false);
+        forwardCycleDirection = true;
+
         //TODO::what else do we need to reset?
     }
 
@@ -159,6 +184,14 @@ public:
 
     int getSpriteRunCycleLoc(){
         return spriteRunCycleLoc;
+    }
+
+    void reverseCycleDirection(){
+        forwardCycleDirection = !forwardCycleDirection;
+    }
+
+    bool getCycleDirection(){
+        return forwardCycleDirection;
     }
 
     void update(){
@@ -187,7 +220,7 @@ private:
     const float horizontalConst = 2;
     const float gravityConst = 0.3;
     int spriteSize;
-
+    bool forwardCycleDirection = true;
     bool isRunning = false;
     //spriteCycleLoc is which sprite in the cycle of the run animation we are currently on. There are 4 total.
     int spriteRunCycleLoc = 0;
