@@ -46,6 +46,10 @@ int main()
             player.moveLeft();
         }
 
+        else{
+            player.resetSprite();
+        }
+
 
         // Process events
         sf::Event event;
