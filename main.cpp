@@ -1,16 +1,24 @@
+//Common C++ libraries
+#include <string>
+#include <iostream>
+#include <sstream>
+
+//SFML libraries
 #include <SFML/Graphics.hpp>
+
+//Project header files
+#include "Player.h"
 
 int main()
 {
     // Create the main window
     sf::RenderWindow window(sf::VideoMode(800, 600), "SFML window");
-    // Load a sprite to display
-    sf::Texture texture;
-    if (!texture.loadFromFile("resources/2x/attack_0.png"))
-        return EXIT_FAILURE;
-    sf::Sprite sprite(texture);
+    std::string textureFile = "resources/2x/attack_0.png";
 
-    sf::Vector2i centerWindow((sf::VideoMode::getDesktopMode().width / 2) - 445, (sf::VideoMode::getDesktopMode().height / 2) - 480);
+    // Create player object
+    Player player(textureFile);
+
+    sf::Vector2i centerWindow((sf::VideoMode::getDesktopMode().width / 2 - 445) , (sf::VideoMode::getDesktopMode().height / 2) - 480);
   
     window.create(sf::VideoMode(1000,500), "My Platformer", sf::Style::Titlebar | sf::Style::Close);
   
@@ -21,8 +29,8 @@ int main()
 
     //draw background (let's start with white, to see our sprite better)
     //
-    sf::RectangleShape square(sf::Vector2f(window.getSize().x,window.getSize().y));
-    square.setFillColor(sf::Color::White);
+    sf::RectangleShape background(sf::Vector2f(window.getSize().x,window.getSize().y));
+    background.setFillColor(sf::Color::White);
 
     // Start the game loop
     while (window.isOpen())
@@ -38,9 +46,13 @@ int main()
         // Clear screen
         window.clear();
 
-        window.draw(square);
+        window.draw(background);
         // Draw the sprite
-        window.draw(sprite);
+        //window.draw(sprite);
+        
+        // Draw the player
+        player.draw(window);
+        
         // Update the window
         window.display();
     }
