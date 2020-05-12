@@ -1,4 +1,5 @@
 #include <SFML/Graphics.hpp>
+
 int main()
 {
     // Create the main window
@@ -8,6 +9,15 @@ int main()
     if (!texture.loadFromFile("resources/2x/attack_0.png"))
         return EXIT_FAILURE;
     sf::Sprite sprite(texture);
+
+    sf::Vector2i centerWindow((sf::VideoMode::getDesktopMode().width / 2) - 445, (sf::VideoMode::getDesktopMode().height / 2) - 480);
+  
+    window.create(sf::VideoMode(1000,500), "My Platformer", sf::Style::Titlebar | sf::Style::Close);
+  
+    window.setPosition(centerWindow);
+  
+    window.setKeyRepeatEnabled(true);
+
 
     //draw background (let's start with white, to see our sprite better)
     //
