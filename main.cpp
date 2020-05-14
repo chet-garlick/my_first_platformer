@@ -7,8 +7,8 @@
 #include <SFML/Graphics.hpp>
 
 //Project header files
-#include "Player.h"
-#include "Platform.h"
+#include "objects/Player.h"
+#include "objects/Platform.h"
 
 
 int main()
